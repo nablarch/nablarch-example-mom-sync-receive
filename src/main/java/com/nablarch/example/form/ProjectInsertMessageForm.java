@@ -7,6 +7,7 @@ import nablarch.core.validation.ee.Required;
 
 /**
  * 受信電文に対するバリデーションのために使用するForm。
+ * @author Nabu Rakutaro
  */
 public class ProjectInsertMessageForm implements Serializable {
 

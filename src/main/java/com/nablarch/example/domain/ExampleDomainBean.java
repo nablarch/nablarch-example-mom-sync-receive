@@ -8,7 +8,9 @@ import com.nablarch.example.validator.YYYYMMDD;
 
 /**
  * ドメイン定義。
+ * @author Nabu Rakutaro
  */
+@SuppressWarnings("all")
 public class ExampleDomainBean {
 
     /** プロジェクト名 */

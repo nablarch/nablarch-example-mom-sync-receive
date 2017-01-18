@@ -22,37 +22,61 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * 日付書式チェック用バリデータのアノテーション。
+ * @author Nabu Rakutaro
  */
 @Documented
-@Constraint(validatedBy = { YYYYMMDDValidator.class })
+@Constraint(validatedBy = YYYYMMDDValidator.class)
 @Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER })
 @Retention(RUNTIME)
 public @interface YYYYMMDD {
 
-    /** グループ */
+    /**
+     * グループ
+     *
+     * @return グループ
+     */
     Class<?>[] groups() default { };
 
-    /** デフォルトメッセージ */
+    /**
+     * デフォルトメッセージ
+     *
+     * @return デフォルトのメッセージ
+     */
     String message() default "{com.nablarch.example.validator.YYYYMMDD.message}";
 
-    /** ペイロード */
+    /**
+     * ペイロード
+     *
+     * @return Payload
+     */
     Class<? extends Payload>[] payload() default { };
 
-    /** 許容する書式 */
+    /**
+     * 許容する書式
+     *
+     * @return 許容する日付のフォーマット(デフォルトはyyyyMMdd)
+     */
     String allowFormat() default "yyyyMMdd";
 
     /** 複数指定用のアノテーション */
+    @SuppressWarnings("PublicInnerClass")
     @Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER })
     @Retention(RUNTIME)
     @Documented
-    public @interface List {
-        /** YYYYMMDDの配列 */
+    @interface List {
+
+        /**
+         * YYYYMMDDの配列
+         *
+         * @return {@link YYYYMMDD}の配列
+         */
         YYYYMMDD[] value();
     }
 
     /**
      * 日付書式チェックバリデータの本体。
      */
+    @SuppressWarnings("PublicInnerClass")
     class YYYYMMDDValidator implements ConstraintValidator<YYYYMMDD, String> {
 
         /** 許容する書式 */
@@ -60,7 +84,7 @@ public @interface YYYYMMDD {
 
         @Override
         public void initialize(YYYYMMDD constraintAnnotation) {
-            this.allowFormat = constraintAnnotation.allowFormat();
+            allowFormat = constraintAnnotation.allowFormat();
         }
 
         @Override
@@ -71,7 +95,7 @@ public @interface YYYYMMDD {
             }
             try {
                 return DateUtil.getParsedDate(value, allowFormat) != null;
-            } catch (IllegalArgumentException e) {
+            } catch (IllegalArgumentException ignored) {
                 return false;
             }
         }

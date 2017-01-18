@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 /**
  * 応答電文に設定する項目を保持するためのForm。
+ * @author Nabu Rakutaro
  */
 public class ProjectInsertMessageResponseForm implements Serializable {
     /**
@@ -14,18 +15,12 @@ public class ProjectInsertMessageResponseForm implements Serializable {
     /**
      * リターンコード。
      */
-    private String returnCode = "";
+    private final String returnCode;
 
     /**
      * 詳細情報。
      */
-    private String detail = "";
-
-    /**
-     * デフォルトコンストラクタ。
-     */
-    public ProjectInsertMessageResponseForm() {
-    }
+    private final String detail;
 
     /**
      * コンストラクタ。
@@ -45,13 +40,6 @@ public class ProjectInsertMessageResponseForm implements Serializable {
         return returnCode;
     }
 
-    /**
-     * リターンコードを設定する。
-     * @param returnCode リターンコード。
-     */
-    public void setReturnCode(String returnCode) {
-        this.returnCode = returnCode;
-    }
 
     /**
      * 詳細情報を取得する。
@@ -59,13 +47,5 @@ public class ProjectInsertMessageResponseForm implements Serializable {
      */
     public String getDetail() {
         return detail;
-    }
-
-    /**
-     * 詳細情報を設定する。
-     * @param detail 詳細情報
-     */
-    public void setDetail(String detail) {
-        this.detail = detail;
     }
 }

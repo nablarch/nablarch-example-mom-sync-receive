@@ -20,7 +20,9 @@ import nablarch.fw.messaging.action.MessagingAction;
 /**
  * プロジェクト登録要求電文を受信して、一時テーブルに電文の情報を格納する。
  * (MOM同期応答メッセージング実行制御基盤を使用)
+ * @author Nabu Rakutaro
  */
+@SuppressWarnings("WeakerAccess")
 public class ProjectInsertMessageAction extends MessagingAction {
 
     // ------------ 正常系制御 --------------- //
@@ -37,12 +39,12 @@ public class ProjectInsertMessageAction extends MessagingAction {
     @Override
     protected ResponseMessage onReceive(RequestMessage request,
             ExecutionContext context) {
-        ProjectInsertMessageForm projectInsertMessageForm = BeanUtil.createAndCopy(ProjectInsertMessageForm.class, request.getParamMap());
+        ProjectInsertMessageForm form = BeanUtil.createAndCopy(ProjectInsertMessageForm.class, request.getParamMap());
 
         //バリデーション処理を行う。エラー検知時は、ApplicationExceptionが送出される。
-        ValidatorUtil.validate(projectInsertMessageForm);
+        ValidatorUtil.validate(form);
 
-        ProjectTemp projectTemp = BeanUtil.createAndCopy(ProjectTemp.class, projectInsertMessageForm);
+        ProjectTemp projectTemp = BeanUtil.createAndCopy(ProjectTemp.class, form);
 
         //対応するプロパティがコピー元に存在しないものについて手動で設定。
         projectTemp.setStatus("0");
@@ -54,8 +56,7 @@ public class ProjectInsertMessageAction extends MessagingAction {
         UniversalDao.insert(projectTemp);
 
         // 応答データ返却
-        ProjectInsertMessageResponseForm resForm = new ProjectInsertMessageResponseForm();
-        resForm.setReturnCode("success");
+        ProjectInsertMessageResponseForm resForm = new ProjectInsertMessageResponseForm("success", "");
         return request.reply().addRecord(resForm);
     }
 
@@ -71,20 +72,17 @@ public class ProjectInsertMessageAction extends MessagingAction {
      */
     @Override
     protected ResponseMessage onError(Throwable e, RequestMessage request, ExecutionContext context) {
-        ProjectInsertMessageResponseForm resForm =
-                new ProjectInsertMessageResponseForm("fatal", "unexpected exception.");
+        final ProjectInsertMessageResponseForm resForm;
 
         if (e instanceof InvalidDataFormatException) {
             //要求電文データレコード部レイアウト不正
-            resForm.setReturnCode("fatal");
-            resForm.setDetail("invalid layout.");
+            resForm = new ProjectInsertMessageResponseForm("fatal", "invalid layout.");
         } else if (e instanceof ApplicationException) {
             //要求電文データレコード部項目バリデーションエラー
-            resForm.setReturnCode("error.validation");
-            resForm.setDetail("");
+            resForm = new ProjectInsertMessageResponseForm("error.validation", "");
+        } else {
+            resForm = new ProjectInsertMessageResponseForm("fatal", "unexpected exception.");
         }
-
         return request.reply().addRecord(resForm);
     }
-
 }
