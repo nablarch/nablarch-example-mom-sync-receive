@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.nablarch.example:nablarch-example-mom-testing-common:5u8">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/nablarch/example/nablarch-example-mom-testing-common/5u8/nablarch-example-mom-testing-common-5u8.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/nablarch/example/nablarch-example-mom-testing-common/5u8/nablarch-example-mom-testing-common-5u8-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/nablarch/example/nablarch-example-mom-testing-common/5u8/nablarch-example-mom-testing-common-5u8-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
