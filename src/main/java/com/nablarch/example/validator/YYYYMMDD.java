@@ -5,14 +5,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import javax.validation.Constraint;
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
 import javax.validation.Payload;
 
-import nablarch.core.util.DateUtil;
-import nablarch.core.util.StringUtil;
-
-import com.nablarch.example.validator.YYYYMMDD.YYYYMMDDValidator;
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.CONSTRUCTOR;
 import static java.lang.annotation.ElementType.FIELD;
@@ -59,7 +53,6 @@ public @interface YYYYMMDD {
     String allowFormat() default "yyyyMMdd";
 
     /** 複数指定用のアノテーション */
-    @SuppressWarnings("PublicInnerClass")
     @Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER })
     @Retention(RUNTIME)
     @Documented
@@ -71,34 +64,6 @@ public @interface YYYYMMDD {
          * @return {@link YYYYMMDD}の配列
          */
         YYYYMMDD[] value();
-    }
-
-    /**
-     * 日付書式チェックバリデータの本体。
-     */
-    @SuppressWarnings("PublicInnerClass")
-    class YYYYMMDDValidator implements ConstraintValidator<YYYYMMDD, String> {
-
-        /** 許容する書式 */
-        private String allowFormat;
-
-        @Override
-        public void initialize(YYYYMMDD constraintAnnotation) {
-            allowFormat = constraintAnnotation.allowFormat();
-        }
-
-        @Override
-        public boolean isValid(String value, ConstraintValidatorContext context) {
-            if (StringUtil.isNullOrEmpty(value)) {
-                //値が設定されていない場合は、バリデーション成功とする。
-                return true;
-            }
-            try {
-                return DateUtil.getParsedDate(value, allowFormat) != null;
-            } catch (IllegalArgumentException ignored) {
-                return false;
-            }
-        }
     }
 
 }

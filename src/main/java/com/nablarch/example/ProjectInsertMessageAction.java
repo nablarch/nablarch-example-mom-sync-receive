@@ -22,7 +22,6 @@ import nablarch.fw.messaging.action.MessagingAction;
  * (MOM同期応答メッセージング実行制御基盤を使用)
  * @author Nabu Rakutaro
  */
-@SuppressWarnings("WeakerAccess")
 public class ProjectInsertMessageAction extends MessagingAction {
 
     // ------------ 正常系制御 --------------- //
