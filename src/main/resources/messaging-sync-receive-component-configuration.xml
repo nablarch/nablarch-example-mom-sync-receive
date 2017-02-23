@@ -107,6 +107,9 @@
     <!-- リクエストスレッドループ -->
     <component-ref name="requestThreadLoopHandler" />
 
+    <!-- スレッドコンテキスト変数削除ハンドラ -->
+    <component class="nablarch.common.handler.threadcontext.ThreadContextClearHandler" />
+
     <!-- スレッドコンテキスト設定ハンドラ -->
     <component-ref name="threadContextHandler" />
 
