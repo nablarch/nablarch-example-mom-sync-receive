@@ -42,21 +42,26 @@ Gitを使用しない場合、最新のタグからzipをダウンロードし�
     $mvn -P gsp clean generate-resources
     $mvn -P gsp install:install-file
 
-#### 3.3. アプリケーションのビルド、依存するライブラリの取得
+#### 3.3. アプリケーションのビルド
 次に、nablarch-example-mom-sync-receiveをビルドします。以下のコマンドを実行してください。
 
     $mvn clean package
-
-ビルド後、以下のコマンドを実行し依存するライブラリを取得します。
-
-    $mvn dependency:copy-dependencies -DoutputDirectory=target/dependency
 
 ### 4. アプリケーションの起動
 
 以下のコマンドで、MOM同期応答メッセージングの受信側のExampleが起動します。
 
     $mvn -P gsp gsp-dba:import-schema
-    $java -cp target/nablarch-example-mom-sync-receive-<バージョン>-dev.jar;target/dependency/* nablarch.fw.launcher.Main -diConfig classpath:messaging-sync-receive-boot.xml -requestPath RECEIVEAPP -userId batch_user
+    $mvn exec:java -Dexec.mainClass=nablarch.fw.launcher.Main -Dexec.args="'-diConfig' 'classpath:messaging-sync-receive-boot.xml' '-requestPath' 'RECEIVEAPP' '-userId' 'batch_user'"
+    
+なお、 `maven-assembly-plugin` を使用して実行可能jarの生成を行っているため、以下の手順にて実行することもできる。
+
+1. ``target/application-<version_no>.zip`` を任意のディレクトリに解凍する。
+2. 以下のコマンドにて実行する
+
+  ```
+      java -jar <1で解凍したディレクトリ名>/nablarch-example-mom-sync-receive-<version_no>.jar -diConfig classpath:messaging-sync-receive-boot.xml -requestPath RECEIVEAPP -userId batch_user
+  ```
 
 起動に成功すると以下のようなログがコンソールに出力され、MOM同期応答メッセージングの送信側からのメッセージの受信待ちの状態になります。
 
