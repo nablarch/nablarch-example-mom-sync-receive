@@ -57,7 +57,15 @@ Gitを使用しない場合、最新のタグからzipをダウンロードし�
 
     $mvn generate-resources
     $mvn exec:java -Dexec.mainClass=nablarch.fw.launcher.Main -Dexec.args="'-diConfig' 'classpath:messaging-sync-receive-boot.xml' '-requestPath' 'RECEIVEAPP' '-userId' 'batch_user'"
-    
+
+なお、 `maven-assembly-plugin` を使用して実行可能jarの生成を行っているため、以下の手順にて実行することもできる。
+
+1. ``target/application-<version_no>.zip`` を任意のディレクトリに解凍する。
+2. 以下のコマンドにて実行する
+
+  ```
+      java -jar <1で解凍したディレクトリ名>/nablarch-example-mom-sync-receive-<version_no>.jar -diConfig classpath:messaging-sync-receive-boot.xml -requestPath RECEIVEAPP -userId batch_user
+  ```
 
 起動に成功すると以下のようなログがコンソールに出力され、MOM同期応答メッセージングの送信側からのメッセージの受信待ちの状態になります。
 
