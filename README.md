@@ -1,10 +1,6 @@
 nablarch-example-mom-sync-receive
 ====================================
 
-| master | develop |
-|:-----------|:------------|
-|[![Build Status](https://travis-ci.org/nablarch/nablarch-example-mom-sync-receive.svg?branch=master)](https://travis-ci.org/nablarch/nablarch-example-mom-sync-receive)|[![Build Status](https://travis-ci.org/nablarch/nablarch-example-mom-sync-receive.svg?branch=develop)](https://travis-ci.org/nablarch/nablarch-example-mom-sync-receive)|
-
 Nablarch FrameworkのMOM同期応答メッセージングの受信側のExampleです。
 MOM同期応答メッセージングの送信側のExampleと組み合わせて使用します。
 
