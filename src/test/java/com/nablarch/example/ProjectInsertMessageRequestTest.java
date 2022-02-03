@@ -1,23 +1,26 @@
 package com.nablarch.example;
 
-import org.junit.Test;
-
-import com.nablarch.example.test.MessagingRequestTestBase;
+import nablarch.test.core.messaging.MessagingRequestTestSupport;
+import nablarch.test.junit5.extension.messaging.MessagingRequestTest;
+import org.junit.jupiter.api.Test;
 
 /**
  * {@link ProjectInsertMessageAction}のテストクラス。
  *
  */
-public class ProjectInsertMessageRequestTest extends MessagingRequestTestBase {
+@MessagingRequestTest
+class ProjectInsertMessageRequestTest {
+    MessagingRequestTestSupport support;
+
     /** 正常終了のテストケース。 */
     @Test
-    public void testNormalEnd() {
-        execute();
+    void testNormalEnd() {
+        support.execute(support.testName.getMethodName());
     }
 
     /** 異常終了のテストケース。 */
     @Test
-    public void testValidationError() {
-        execute();
+    void testValidationError() {
+        support.execute(support.testName.getMethodName());
     }
 }
