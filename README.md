@@ -12,8 +12,8 @@ MOM同期応答メッセージングの送信側のExampleと組み合わせて�
 
 ### 1.動作環境
 実行環境に以下のソフトウェアがインストールされている事を前提とします。
-* Java Version : 8
-* Maven 3.0.5以降
+* Java Version : 17
+* Maven 3.9.0以降
 
 補足：
 MOMとRDBMSはExampleに組み込まれたものを使用します。
@@ -42,6 +42,8 @@ Gitを使用しない場合、最新のタグからzipをダウンロードし�
     $cd ../nablarch-example-mom-sync-receive
     $mvn clean generate-resources
 
+※gspプラグインをJava 17で実行するためにはJVMオプションの指定が必要ですが、そのオプションは`.mvn/jvm.config`で指定しています。
+
 #### 3.3. アプリケーションのビルド
 次に、nablarch-example-mom-sync-receiveをビルドします。以下のコマンドを実行してください。
 
@@ -67,57 +69,60 @@ Gitを使用しない場合、最新のタグからzipをダウンロードし�
 
 起動に成功すると以下のようなログがコンソールに出力され、MOM同期応答メッセージングの送信側からのメッセージの受信待ちの状態になります。
 
-    2016-06-07 16:57:51.415 -INFO- ROO [null] load environment config file. file = classpath:env.config
-     INFO | Using Persistence Adapter: MemoryPersistenceAdapter
-     INFO | Apache ActiveMQ 5.13.0 (localhost, ID:S1306C00419-T1-42773-1465286271571-0:1) is starting
-     INFO | Listening for connections at: tcp://127.0.0.1:61616
-     INFO | Connector tcp://127.0.0.1:61616 started
-     INFO | Apache ActiveMQ 5.13.0 (localhost, ID:S1306C00419-T1-42773-1465286271571-0:1) started
-     INFO | For help or more information please see: http://activemq.apache.org
-     WARN | Memory Usage for the Broker (1024 mb) is more than the maximum available for the JVM: 247 mb - resetting to 70% of maximum available: 173 mb
-     WARN | Temporary Store limit is 51200 mb (current store usage is 0 mb). The data directory: C:\Users\TIS303995\git\nablarch-example\nablarch-example-mom-sync-receive only has 7035 mb of usable space - resetting to maximum available disk space: 7035 mb
-    2016-06-07 16:57:52.527 -INFO- ROO [null] @@@@ APPLICATION SETTINGS @@@@
-            system settings = {
-            }
-            business date = [20140123]
+```log
+2023-02-15 13:28:17.362 -INFO- nablarch.fw.launcher.Main [null] boot_proc = [] proc_sys = [mom-sync-receive] req_id
+= [null] usr_id = [null] @@@@ APPLICATION SETTINGS @@@@
+        system settings = {
+        }
+        business date = [20140123]
+```
 
 MOM同期応答メッセージングの送信側を起動すると、MOM同期応答メッセージングの受信側のコンソールに以下のように、メッセージを受信したことと、メッセージを返信したことを示すログが出力されます。
 (コンソール中の文字が化けるのは仕様です。)
 
-    2016-06-07 17:18:34.123 -INFO- ROO [201606071717526770006] @@@@ RECEIVED MESSAGE @@@@
-            thread_name    = [pool-1-thread-1]
-            message_id     = [ID:S1306C00419-T1-58114-1465287513655-1:1:1:1:1]
-            destination    = [TEST.REQUEST]
-            correlation_id = [null]
-            reply_to       = [TEST.RESPONSE]
-            message_body   = [ProjectInsertMessage0
-    ????????，??§??￣????????????
-                                                                                                                                                           development
+```log
+2023-02-15 13:30:09.178 -INFO- MESSAGING [202302151328173640001] boot_proc = [] proc_sys = [mom-sync-receive] req_id
+ = [RECEIVEAPP] usr_id = [batch_user] @@@@ RECEIVED MESSAGE @@@@
+        thread_name    = [pool-1-thread-1]
+        message_id     = [ID:6e02d455-ace9-11ed-bf95-9c7befbbf589]
+        destination    = [TEST.REQUEST]
+        correlation_id = [null]
+        reply_to       = [TEST.RESPONSE]
+        message_body   = [ProjectInsertMessage0
+?v???W?F?N?g?O?O?P
 
-                                                                   s
-                                                                                                                                                                                                                       20100918201504091
-    ??´??¨
-                                                                                                                                                          ??????
+                        development
+                                    s
+                                                20100918201504091        ????
 
-                                                                  100      ???????￢?
-
-
+                                                                                                 ????
 
 
+     100      ???l??
 
-                                                                                                                                                                                                10000    1000     2000     3000
-    ]
-     INFO | HV000001: Hibernate Validator 5.2.4.Final
-    2016-06-07 17:18:35.545 -INFO- ROO [201606071718343110007] @@@@ SENT MESSAGE @@@@
-            thread_name    = [pool-1-thread-1]
-            message_id     = [ID:S1306C00419-T1-42773-1465286271571-4:1:1:1:1]
-            destination    = [TEST.RESPONSE]
-            correlation_id = [ID:S1306C00419-T1-58114-1465287513655-1:1:1:1:1]
-            reply_to       = [null]
-            time_to_live   = [0]
-            message_body   = [ProjectInsertMessage0success
 
-    ]
+
+
+
+
+
+                                                                                                              10000
+   1000     2000     3000
+]
+(中略)
+2023-02-15 13:30:09.602 -INFO- MESSAGING [202302151330092260002] boot_proc = [] proc_sys = [mom-sync-receive] req_id
+ = [ProjectInsertMessage] usr_id = [batch_user] @@@@ SENT MESSAGE @@@@
+        thread_name    = [pool-1-thread-1]
+        message_id     = [ID:6e481b72-ace9-11ed-8a28-9c7befbbf589]
+        destination    = [TEST.RESPONSE]
+        correlation_id = [ID:6e02d455-ace9-11ed-bf95-9c7befbbf589]
+        reply_to       = [null]
+        time_to_live   = [0]
+        message_body   = [ProjectInsertMessage0
+success
+]
+```
+
 
 自動的に終了はしないため、ctrl + c等で終了させてください。
 
