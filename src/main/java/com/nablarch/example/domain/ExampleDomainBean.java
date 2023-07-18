@@ -1,10 +1,9 @@
 package com.nablarch.example.domain;
 
+import nablarch.core.validation.ee.DateFormat;
 import nablarch.core.validation.ee.Digits;
 import nablarch.core.validation.ee.Length;
 import nablarch.core.validation.ee.SystemChar;
-
-import com.nablarch.example.validator.YYYYMMDD;
 
 /**
  * ドメイン定義。
@@ -29,7 +28,7 @@ public class ExampleDomainBean {
     private String projectClass;
 
     /** 日付 */
-    @YYYYMMDD
+    @DateFormat
     private String date;
 
     /** 顧客ID */
