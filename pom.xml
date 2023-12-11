@@ -130,7 +130,7 @@
       <artifactId>nablarch-fw-messaging-mom</artifactId>
     </dependency>
 
-    <!-- WebSphere MQ用ライブラリ -->
+    <!-- IBM MQ用ライブラリ -->
     <dependency>
       <groupId>org.apache.activemq</groupId>
       <artifactId>activemq-all</artifactId>
