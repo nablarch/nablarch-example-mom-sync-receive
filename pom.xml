@@ -4,7 +4,7 @@
 
   <groupId>com.nablarch.example</groupId>
   <artifactId>nablarch-example-mom-sync-receive</artifactId>
-  <version>5u23</version>
+  <version>5u24</version>
   <packaging>jar</packaging>
 
   <properties>
@@ -35,7 +35,7 @@
       <dependency>
         <groupId>com.nablarch.profile</groupId>
         <artifactId>nablarch-bom</artifactId>
-        <version>5u23</version>
+        <version>5u24</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -54,7 +54,7 @@
     <dependency>
       <groupId>com.nablarch.example</groupId>
       <artifactId>nablarch-example-mom-testing-common</artifactId>
-      <version>5u23</version>
+      <version>5u24</version>
       <scope>runtime</scope>
     </dependency>
 
@@ -130,7 +130,7 @@
       <artifactId>nablarch-fw-messaging-mom</artifactId>
     </dependency>
 
-    <!-- WebSphere MQ用ライブラリ -->
+    <!-- IBM MQ用ライブラリ -->
     <dependency>
       <groupId>org.apache.activemq</groupId>
       <artifactId>activemq-all</artifactId>
