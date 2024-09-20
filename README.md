@@ -36,15 +36,10 @@ Gitを使用しない場合、最新のタグからzipをダウンロードし�
     $cd nablarch-example-mom-testing-common
     $mvn clean install
 
-#### 3.2. データベースのセットアップ及びエンティティクラスの作成
-続いて、データベースのセットアップ及びエンティティクラスの作成を行います。以下のコマンドを実行してください。
+#### 3.2. アプリケーションのビルド
+続いて、データベースのセットアップとnablarch-example-mom-sync-receiveのビルドを行います。以下のコマンドを実行してください。
 
     $cd ../nablarch-example-mom-sync-receive
-    $mvn clean generate-resources
-
-#### 3.3. アプリケーションのビルド
-次に、nablarch-example-mom-sync-receiveをビルドします。以下のコマンドを実行してください。
-
     $mvn package
 
 ※Windowsのコマンドプロンプトから実行した際にVMがクラッシュする場合は `mvn package > log-file.log` のようにログ出力をリダイレクトしてください。
