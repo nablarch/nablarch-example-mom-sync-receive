@@ -37,7 +37,7 @@ Gitを使用しない場合、最新のタグからzipをダウンロードし�
     $mvn clean install
 
 #### 3.2. アプリケーションのビルド
-続いて、nablarch-example-mom-sync-receiveをビルドします。以下のコマンドを実行してください。
+続いて、データベースのセットアップとnablarch-example-mom-sync-receiveのビルドを行います。以下のコマンドを実行してください。
 
     $cd ../nablarch-example-mom-sync-receive
     $mvn package
