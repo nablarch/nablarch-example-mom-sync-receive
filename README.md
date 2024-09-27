@@ -13,7 +13,7 @@ MOM同期応答メッセージングの送信側のExampleと組み合わせて�
 ### 1.動作環境
 実行環境に以下のソフトウェアがインストールされている事を前提とします。
 * Java Version : 17
-* Maven 3.9.0以降
+* Maven 3.9.9以降
 
 補足：
 MOMとRDBMSはExampleに組み込まれたものを使用します。
@@ -36,20 +36,28 @@ Gitを使用しない場合、最新のタグからzipをダウンロードし�
     $cd nablarch-example-mom-testing-common
     $mvn clean install
 
-#### 3.2. データベースのセットアップ及びエンティティクラスの作成
-続いて、データベースのセットアップ及びエンティティクラスの作成を行います。以下のコマンドを実行してください。
-
-    $cd ../nablarch-example-mom-sync-receive
-    $mvn clean generate-resources
-
-※gspプラグインをJava 17で実行するためにはJVMオプションの指定が必要ですが、そのオプションは`.mvn/jvm.config`で指定しています。
-
-#### 3.3. アプリケーションのビルド
+#### 3.2. アプリケーションのビルド
 次に、nablarch-example-mom-sync-receiveをビルドします。以下のコマンドを実行してください。
 
+    $cd ../nablarch-example-mom-sync-receive
     $mvn package
 
 ※Windowsのコマンドプロンプトから実行した際にVMがクラッシュする場合は `mvn package > log-file.log` のようにログ出力をリダイレクトしてください。
+
+実行に成功すると、以下のようなログがコンソールに出力されます。
+
+    (中略)
+    [INFO] ------------------------------------------------------------------------
+    [INFO] BUILD SUCCESS
+    [INFO] ------------------------------------------------------------------------
+    (中略)
+
+#### データベースのセットアップ及びエンティティクラスの作成について
+
+アプリケーションを実行するためにはデータベースのセットアップ及びエンティティクラスの作成が必要ですが、これは`mvn package`の実行に含まれています。この処理は`mvn generate-resources`で個別に実行することもできます。
+
+※gspプラグインをJava 17で実行するためにはJVMオプションの指定が必要ですが、そのオプションは`.mvn/jvm.config`で指定しています。
+
 
 ### 4. アプリケーションの起動
 
@@ -63,9 +71,7 @@ Gitを使用しない場合、最新のタグからzipをダウンロードし�
 1. ``target/application-<version_no>.zip`` を任意のディレクトリに解凍する。
 2. 以下のコマンドにて実行する
 
-  ```
-      java -jar <1で解凍したディレクトリ名>/nablarch-example-mom-sync-receive-<version_no>.jar -diConfig classpath:messaging-sync-receive-boot.xml -requestPath RECEIVEAPP -userId batch_user
-  ```
+       $java -jar <1で解凍したディレクトリ名>/nablarch-example-mom-sync-receive-<version_no>.jar -diConfig classpath:messaging-sync-receive-boot.xml -requestPath RECEIVEAPP -userId batch_user
 
 起動に成功すると以下のようなログがコンソールに出力され、MOM同期応答メッセージングの送信側からのメッセージの受信待ちの状態になります。
 
