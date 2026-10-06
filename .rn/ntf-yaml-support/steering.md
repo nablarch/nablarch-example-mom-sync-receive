@@ -98,16 +98,16 @@ Rules「`testDataParser` が参照される全フェーズで YAML リーダー�
 
 **Steps**:
 
-- [ ] `pom.xml` に `nablarch-testing-yaml:1.0.0-SNAPSHOT`（test scope）を追加する
-- [ ] `pom.xml` の `<build><plugins>` に `nablarch-testing-converter:1.0.0-SNAPSHOT` をビルドプラグインとして追加する（`<configuration>` に from=xls / to=yaml / input / output / overwrite を設定）
-- [ ] 本テストの構成を判定する（応答電文 `response_*` / sendSync の有無で判断）→ 非トリガーと判定済み（steering 参照）
-- [ ] `unit-test.xml` に `yamlInterpreters` リストと `YamlTestDataParser`（`testDataParser` 上書き）を配置する（`test-data.xml` import・`dbInfo` 定義より後）
-- [ ] `mvn dependency:resolve` などで pom とyaml依存が解決できること、`mvn help:describe` で converter プラグインの `convert` ゴールが解決できることを確認する
-- [ ] 変更したファイルをコミットする
-- [ ] self-check (OK/NG per completion criterion, record in checks/task-2.md)
-- [ ] QA expert review (Agent: general-purpose / Opus 4.8)
-- [ ] language expert review (Agent: general-purpose / Opus 4.8)
-- [ ] software-engineering expert review (Agent: general-purpose / Opus 4.8)
+- [x] `pom.xml` に `nablarch-testing-yaml:1.0.0-SNAPSHOT`（test scope）を追加する
+- [x] `pom.xml` の `<build><plugins>` に `nablarch-testing-converter:1.0.0-SNAPSHOT` をビルドプラグインとして追加する（`<configuration>` に from=xls / to=yaml / input / output / overwrite を設定）
+- [x] 本テストの構成を判定する（応答電文 `response_*` / sendSync の有無で判断）→ 非トリガーと判定済み（steering 参照）
+- [x] `unit-test.xml` に `yamlInterpreters` リストと `YamlTestDataParser`（`testDataParser` 上書き）を配置する（`test-data.xml` import・`dbInfo` 定義より後）
+- [x] `mvn dependency:resolve` などで pom とyaml依存が解決できること、`mvn help:describe` で converter プラグインの `convert` ゴールが解決できることを確認する
+- [x] 変更したファイルをコミットする
+- [x] self-check (OK/NG per completion criterion, record in checks/task-2.md)
+- [x] QA expert review (Agent: general-purpose / Opus 4.8)
+- [x] language expert review (Agent: general-purpose / Opus 4.8)
+- [x] software-engineering expert review (Agent: general-purpose / Opus 4.8)
 - [ ] user review
 
 **Completion criteria**:
@@ -191,6 +191,6 @@ Rules「`testDataParser` が参照される全フェーズで YAML リーダー�
 
 - **Status**: in progress
 - **Date**: 2026-10-06
-- **Last completed**: #1 現状のビルド・テスト全PASS確認（Tests run: 4, Failures: 0, Errors: 0, Skipped: 0 / BUILD SUCCESS）
-- **Next**: #2 設定変更（pom.xml / unit-test.xml）
-- **Notes**: ブランチ `ntf-yaml-support` を `develop`(39a4f5c) から作成。変換対象Excelは2件（.xlsx 1 / .xls 1、別名のため併存問題なし）。
+- **Last completed**: #2 設定変更（pom.xml に yaml 依存・converter プラグイン追加、unit-test.xml に yamlInterpreters/YamlTestDataParser 追加）。self-check/QA/Language/SW-eng すべて OK
+- **Next**: #3 ExcelテストデータをYAMLに変換
+- **Notes**: ブランチ `ntf-yaml-support` を `develop`(39a4f5c) から作成。変換対象Excelは2件（.xlsx 1 / .xls 1、別名のため併存問題なし）。YAML配置は unit-test.xml 単一（受信側=sendSync不使用=非トリガー）。
