@@ -149,11 +149,11 @@ Rules「`testDataParser` が参照される全フェーズで YAML リーダー�
 
 **Steps**:
 
-- [ ] 変換対象となった Excel ファイルを削除する
-- [ ] 削除結果（残存Excelが0件であること）を `checks/task-4.md` に記録する
-- [ ] Excelファイル削除をコミットする
-- [ ] self-check (OK/NG per completion criterion, record in checks/task-4.md)
-- [ ] QA expert review (Agent: general-purpose / Opus 4.8)
+- [x] 変換対象となった Excel ファイルを削除する
+- [x] 削除結果（残存Excelが0件であること）を `checks/task-4.md` に記録する
+- [x] Excelファイル削除をコミットする
+- [x] self-check (OK/NG per completion criterion, record in checks/task-4.md)
+- [x] QA expert review (Agent: general-purpose / Opus 4.8)
 - [ ] user review
 
 **Completion criteria**:
@@ -195,6 +195,6 @@ Rules「`testDataParser` が参照される全フェーズで YAML リーダー�
 
 - **Status**: in progress
 - **Date**: 2026-10-06
-- **Last completed**: #3 Excel→YAML変換（2 Excel→5 YAML）。サンプリング比較で差異なし、self-check/QA ともに OK
-- **Next**: #4 Excel を削除する
+- **Last completed**: #4 変換済みExcel 2件を削除（残存0件）。self-check/QA ともに OK
+- **Next**: #5 YAMLテストデータで全テストをパスさせる
 - **Notes**: ブランチ `ntf-yaml-support` を `develop`(39a4f5c) から作成。変換対象Excelは2件（.xlsx 1 / .xls 1、別名のため併存問題なし）。YAML配置は unit-test.xml 単一（受信側=sendSync不使用=非トリガー）。
