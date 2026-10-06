@@ -169,12 +169,12 @@ Rules「`testDataParser` が参照される全フェーズで YAML リーダー�
 
 **Steps**:
 
-- [ ] `mvn test` が BUILD SUCCESS になることを確認する
-- [ ] テストログで YamlTestDataParser が実際に使われていることを確認する
-- [ ] self-check (OK/NG per completion criterion, record in checks/task-5.md)
-- [ ] QA expert review (Agent: general-purpose / Opus 4.8)
-- [ ] language expert review (Agent: general-purpose / Opus 4.8)
-- [ ] software-engineering expert review (Agent: general-purpose / Opus 4.8)
+- [x] `mvn test` が BUILD SUCCESS になることを確認する
+- [x] テストログで YamlTestDataParser が実際に使われていることを確認する
+- [x] self-check (OK/NG per completion criterion, record in checks/task-5.md)
+- [x] QA expert review (Agent: general-purpose / Opus 4.8)
+- [x] language expert review — N/A（コード変更なし）
+- [x] software-engineering expert review — N/A（コード変更なし）
 - [ ] user review
 
 **Completion criteria**:
@@ -193,8 +193,8 @@ Rules「`testDataParser` が参照される全フェーズで YAML リーダー�
 
 # State
 
-- **Status**: in progress
+- **Status**: 全task完了（まとめ user review 待ち）
 - **Date**: 2026-10-06
-- **Last completed**: #4 変換済みExcel 2件を削除（残存0件）。self-check/QA ともに OK
-- **Next**: #5 YAMLテストデータで全テストをパスさせる
+- **Last completed**: #5 Excelなしで `mvn clean test` BUILD SUCCESS（4件全パス）、YamlTestDataParser 使用をログで確認。self-check/QA OK
+- **Next**: 全5 task 完了。まとめて user review 実施 → 問題なければユーザーが push
 - **Notes**: ブランチ `ntf-yaml-support` を `develop`(39a4f5c) から作成。変換対象Excelは2件（.xlsx 1 / .xls 1、別名のため併存問題なし）。YAML配置は unit-test.xml 単一（受信側=sendSync不使用=非トリガー）。
