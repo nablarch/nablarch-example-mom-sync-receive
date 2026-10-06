@@ -125,14 +125,14 @@ Rules「`testDataParser` が参照される全フェーズで YAML リーダー�
 
 **Steps**:
 
-- [ ] 対象 Excel ファイルの所在を確認する
-- [ ] 同名の `.xls` と `.xlsx` が併存していないか確認する（本プロジェクトは別名のため非該当）
-- [ ] converter の README 手順に従い、全ての対象ExcelファイルをYAML変換する
-- [ ] 変換後、各YAMLファイルについてExcelの内容とサンプリングで比較し、一致を確認する（各ファイル最低3件。元データが3件未満の場合は元データ件数分）
-- [ ] サンプリング比較結果を `checks/task-3.md` に記録する（差異があれば原因を調査しユーザーに報告し、修正せずに止める）
-- [ ] 変換したYAMLファイルをコミットする（Excelはまだ削除しない）
-- [ ] self-check (OK/NG per completion criterion, record in checks/task-3.md)
-- [ ] QA expert review (Agent: general-purpose / Opus 4.8)
+- [x] 対象 Excel ファイルの所在を確認する
+- [x] 同名の `.xls` と `.xlsx` が併存していないか確認する（本プロジェクトは別名のため非該当）
+- [x] converter の README 手順に従い、全ての対象ExcelファイルをYAML変換する
+- [x] 変換後、各YAMLファイルについてExcelの内容とサンプリングで比較し、一致を確認する（各ファイル最低3件。元データが3件未満の場合は元データ件数分）
+- [x] サンプリング比較結果を `checks/task-3.md` に記録する（差異があれば原因を調査しユーザーに報告し、修正せずに止める）
+- [x] 変換したYAMLファイルをコミットする（Excelはまだ削除しない）
+- [x] self-check (OK/NG per completion criterion, record in checks/task-3.md)
+- [x] QA expert review (Agent: general-purpose / Opus 4.8)
 - [ ] user review
 
 **Completion criteria**:
@@ -182,6 +182,10 @@ Rules「`testDataParser` が参照される全フェーズで YAML リーダー�
 - `mvn test` が BUILD SUCCESS で終了する（全テストパス、Excel ファイルなし）
 - テストログで YamlTestDataParser が実際に使われていることが確認できる
 
+# Scripts
+
+- `.rn/ntf-yaml-support/scripts/ExcelDump.java` — Task #3 のサンプリング比較用。NTF と同じ Apache POI（poi/poi-ooxml 3.8、テストクラスパスに同梱）で `.xls`/`.xlsx` の各シート・各行・各セルをプレーンテキストにダンプし、converter が生成した YAML と内容を人手で突合するために使用。実行方法はソース冒頭コメント参照（テストクラスパスは `mvn dependency:build-classpath` で取得、`LANG=ja_JP.UTF-8` で実行）。
+
 # Decisions
 
 - YAML設定の配置は `unit-test.xml` のみとする（本アクションは sendSync を使わない受信側のため、実行中にモックが testDataParser を参照しない。詳細は「YAML設定の配置方針」参照）。
@@ -191,6 +195,6 @@ Rules「`testDataParser` が参照される全フェーズで YAML リーダー�
 
 - **Status**: in progress
 - **Date**: 2026-10-06
-- **Last completed**: #2 設定変更（pom.xml に yaml 依存・converter プラグイン追加、unit-test.xml に yamlInterpreters/YamlTestDataParser 追加）。self-check/QA/Language/SW-eng すべて OK
-- **Next**: #3 ExcelテストデータをYAMLに変換
+- **Last completed**: #3 Excel→YAML変換（2 Excel→5 YAML）。サンプリング比較で差異なし、self-check/QA ともに OK
+- **Next**: #4 Excel を削除する
 - **Notes**: ブランチ `ntf-yaml-support` を `develop`(39a4f5c) から作成。変換対象Excelは2件（.xlsx 1 / .xls 1、別名のため併存問題なし）。YAML配置は unit-test.xml 単一（受信側=sendSync不使用=非トリガー）。
