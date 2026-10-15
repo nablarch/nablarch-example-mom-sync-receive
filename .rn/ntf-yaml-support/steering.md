@@ -74,16 +74,16 @@ Rules「`testDataParser` が参照される全フェーズで YAML リーダー�
 同一内容へ揃えるコミットを1つ新規に積み、develop 同等状態で全テストがパスすることを確認する。
 **Prerequisites**: none
 **Steps**:
-- [ ] 既存 `ntf-yaml-support` ブランチへ切替（新規作成しない／履歴維持）
-- [ ] 過去移行コミットを巻き戻さず、先端の上に処理を積む（rebase/reset --hard/amend を使わない）
-- [ ] `develop` 存在確認 → `git read-tree -u --reset develop` → commit でベースライン化（ツリーが develop と完全一致）
-- [ ] README を確認しビルド・テスト手順を把握
-- [ ] steering.md と scripts の初版を作成
-- [ ] `mvn generate-resources` でエンティティ生成
-- [ ] `mvn test` で全テストパスを確認
-- [ ] 結果を `checks/task-1.md` に記録（self-check列）
-- [ ] 変更ファイル（checks・steering.md・scripts）をコミット
-- [ ] self-check / QA expert review / user review
+- [x] 既存 `ntf-yaml-support` ブランチへ切替（新規作成しない／履歴維持）
+- [x] 過去移行コミットを巻き戻さず、先端の上に処理を積む（rebase/reset --hard/amend を使わない）
+- [x] `develop` 存在確認 → `git read-tree -u --reset develop` → commit でベースライン化（ツリーが develop と完全一致）
+- [x] README を確認しビルド・テスト手順を把握
+- [x] steering.md と scripts の初版を作成
+- [x] `mvn generate-resources` でエンティティ生成
+- [x] `mvn test` で全テストパスを確認
+- [x] 結果を `checks/task-1.md` に記録（self-check列）
+- [x] 変更ファイル（checks・steering.md・scripts）をコミット
+- [x] self-check / QA expert review（Verdict OK）/ user review（全task完了後にまとめて実施）
 **Completion criteria**:
 - 既存 `ntf-yaml-support` ブランチ上・履歴維持（過去移行コミット残存、rebase/amend/hard reset なし）
 - 先端の上に develop 同一ツリーの新規コミットが1つ積まれている
