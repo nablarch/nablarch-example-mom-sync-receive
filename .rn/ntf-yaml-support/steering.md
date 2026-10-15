@@ -113,13 +113,13 @@ Rules「`testDataParser` が参照される全フェーズで YAML リーダー�
 **Purpose**: converter で Excel を YAML へ変換し、ソースツリー内に配置してサンプリングで内容一致を確認する。
 **Prerequisites**: #2
 **Steps**:
-- [ ] 対象 Excel の所在確認（2件）
-- [ ] 同名 .xls/.xlsx 併存チェック（本プロジェクトは異名のため非該当）
-- [ ] converter README に従い全 Excel を YAML 変換
-- [ ] 各 YAML を Excel と最低3件（元データが3件未満は全件）サンプリング比較
-- [ ] 比較結果を `checks/task-3.md` の Sampling Comparison に記録（差異があれば修正せず報告・停止）
-- [ ] 変換 YAML をコミット（Excel はまだ削除しない）
-- [ ] self-check / QA / user review
+- [x] 対象 Excel の所在確認（2件）
+- [x] 同名 .xls/.xlsx 併存チェック（本プロジェクトは異名のため非該当）
+- [x] converter README に従い全 Excel を YAML 変換（Converted 2 file(s)、YAML 5件生成）
+- [x] 各 YAML を Excel と最低3件（元データが3件未満は全件）サンプリング比較
+- [x] 比較結果を `checks/task-3.md` の Sampling Comparison に記録（差異なし）
+- [x] 変換 YAML をコミット（Excel はまだ削除しない）
+- [x] self-check / QA（Verdict OK）/ user review（全task完了後まとめて）
 **Completion criteria**:
 - 全 Excel に対応する YAML が生成されている
 - サンプリング比較で Excel と YAML が一致
