@@ -94,15 +94,15 @@ Rules「`testDataParser` が参照される全フェーズで YAML リーダー�
 追加し、`unit-test.xml` に `yamlInterpreters`（2つのみ）と `YamlTestDataParser` を追加する。
 **Prerequisites**: #1
 **Steps**:
-- [ ] `pom.xml` に `nablarch-testing-yaml:1.0.0-SNAPSHOT`（test scope）追加
-- [ ] `pom.xml` の `<build><plugins>` に `nablarch-testing-converter:1.0.0-SNAPSHOT` をビルドプラグイン追加
+- [x] `pom.xml` に `nablarch-testing-yaml:1.0.0-SNAPSHOT`（test scope）追加
+- [x] `pom.xml` の `<build><plugins>` に `nablarch-testing-converter:1.0.0-SNAPSHOT` をビルドプラグイン追加
       （`<configuration>` に from=xls/to=yaml/input/output/overwrite を設定）
-- [ ] 構成判定（応答電文 response_* / sendSync の有無）→ 非トリガー（steering 参照）
-- [ ] `unit-test.xml` に `yamlInterpreters`（compositeInterpreter・dateTimeInterpreter のみ）と
+- [x] 構成判定（応答電文 response_* / sendSync の有無）→ 非トリガー（steering 参照）
+- [x] `unit-test.xml` に `yamlInterpreters`（compositeInterpreter・dateTimeInterpreter のみ）と
       `YamlTestDataParser`（testDataParser 上書き）を配置（test-data.xml import・dbInfo 定義より後）
-- [ ] `mvn dependency:resolve` と `mvn help:describe` で converter `convert` ゴール解決を確認
-- [ ] 変更をコミット
-- [ ] self-check / QA / language / software-engineering / user review
+- [x] `mvn dependency:resolve` と `mvn help:describe` で converter `convert` ゴール解決を確認
+- [x] 変更をコミット
+- [x] self-check / QA / language / software-engineering（すべて Verdict OK）/ user review（全task完了後まとめて）
 **Completion criteria**:
 - `pom.xml` に yaml（test）と converter（ビルドプラグイン）が追加されている
 - `yamlInterpreters` に compositeInterpreter と dateTimeInterpreter の2つのみ、`testDataParser` が
