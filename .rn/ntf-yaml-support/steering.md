@@ -62,6 +62,10 @@ Rules「`testDataParser` が参照される全フェーズで YAML リーダー�
   システム時刻記法＝dateTimeInterpreter のみが必要。他の interpreter は追加しない）。
 - 本番用 boot（`src/main/resources` 配下）には入れない。
 
+## reports
+
+- `reports/task-5-test-failure-report.md`: Task #5 のテスト失敗（`${systemTime}` 未解釈）についての事象・直接原因・根本原因・対応案。
+
 ## scripts
 
 - `scripts/ExcelDump.java`: Task #3 のサンプリング比較用。Excel（.xls/.xlsx）の各シート・各行・各セルを
@@ -141,9 +145,10 @@ Rules「`testDataParser` が参照される全フェーズで YAML リーダー�
 **Purpose**: Excelなしで全テストがパスすることを確認する。
 **Prerequisites**: #4
 **Steps**:
-- [ ] `mvn test` が BUILD SUCCESS
-- [ ] テストログで YamlTestDataParser が使われていることを確認
-- [ ] self-check / QA / language / software-engineering / user review
+- [ ] `mvn test` が BUILD SUCCESS（1回目: BUILD FAILURE。testNormalEnd の `${systemTime}` が未解釈。
+      原因は `yamlInterpreters` の順番（composite → dateTime）。`reports/task-5-test-failure-report.md` 参照。ユーザー判断待ちで停止中）
+- [x] テストログで YamlTestDataParser が使われていることを確認
+- [ ] self-check（NG 記録済み）/ QA / language / software-engineering / user review
 **Completion criteria**:
 - `mvn test` が BUILD SUCCESS（全テストパス、Excel なし）
 - テストログで YamlTestDataParser が使われていることが確認できる
