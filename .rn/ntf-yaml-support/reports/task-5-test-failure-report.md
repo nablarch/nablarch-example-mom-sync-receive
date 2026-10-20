@@ -3,7 +3,7 @@
 - 対象プロジェクト: `nablarch-example-mom-sync-receive`（ブランチ `ntf-yaml-support`）
 - 対象コミット: `6691e47`（task-4 完了記録の時点。Excel 削除済み・YAML 5件あり）
 - 実行手順: `LANG=ja_JP.UTF-8 LC_ALL=ja_JP.UTF-8` を設定し、`mvn clean generate-resources` → `mvn test`（steering.md の Build / Test に従う）
-- 状態: 運用ルールに従い、**修正は行わず停止中**（ユーザー判断待ち）
+- 状態: ユーザー承認のうえ **案A を適用済み**（task-2 修正コミット `49e385c`）。再実行で `Tests run: 4, Failures: 0` / BUILD SUCCESS。task-2 の QA / Language / Software-engineering 再レビュー、task-5 の QA レビューともに OK
 
 ---
 

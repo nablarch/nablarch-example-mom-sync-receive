@@ -57,7 +57,7 @@ Rules「`testDataParser` が参照される全フェーズで YAML リーダー�
     全パスした前例とも一致。
 - 配置: `unit-test.xml` に `yamlInterpreters` リストと `YamlTestDataParser`（`testDataParser` 上書き）を
   追加する。定義順は `test-data.xml` import より後・`dbInfo` 定義より後に置き参照解決を担保する。
-- `yamlInterpreters` には **`compositeInterpreter` と `dateTimeInterpreter` の2つのみ**を定義する
+- `yamlInterpreters` には **`dateTimeInterpreter` → `compositeInterpreter` の順で2つのみ**を定義する
   （YAML はネイティブに null / 改行 / 引用符を扱うため、NTF 固有記法のうち文字増幅＝compositeInterpreter と
   システム時刻記法＝dateTimeInterpreter のみが必要。他の interpreter は追加しない）。
 - 本番用 boot（`src/main/resources` 配下）には入れない。
@@ -104,6 +104,8 @@ Rules「`testDataParser` が参照される全フェーズで YAML リーダー�
 - [x] 構成判定（応答電文 response_* / sendSync の有無）→ 非トリガー（steering 参照）
 - [x] `unit-test.xml` に `yamlInterpreters`（compositeInterpreter・dateTimeInterpreter のみ）と
       `YamlTestDataParser`（testDataParser 上書き）を配置（test-data.xml import・dbInfo 定義より後）
+- [x] （Task #5 失敗を受けた修正）`yamlInterpreters` を dateTimeInterpreter → compositeInterpreter の順に変更（49e385c。
+      compositeInterpreter は `${...}` を解釈すると後続へ委譲しないため。task-2 の QA / language / software-engineering 再レビュー OK）
 - [x] `mvn dependency:resolve` と `mvn help:describe` で converter `convert` ゴール解決を確認
 - [x] 変更をコミット
 - [x] self-check / QA / language / software-engineering（すべて Verdict OK）/ user review（全task完了後まとめて）
@@ -145,10 +147,11 @@ Rules「`testDataParser` が参照される全フェーズで YAML リーダー�
 **Purpose**: Excelなしで全テストがパスすることを確認する。
 **Prerequisites**: #4
 **Steps**:
-- [ ] `mvn test` が BUILD SUCCESS（1回目: BUILD FAILURE。testNormalEnd の `${systemTime}` が未解釈。
-      原因は `yamlInterpreters` の順番（composite → dateTime）。`reports/task-5-test-failure-report.md` 参照。ユーザー判断待ちで停止中）
+- [x] `mvn test` が BUILD SUCCESS（1回目: BUILD FAILURE。testNormalEnd の `${systemTime}` が未解釈。
+      原因は `yamlInterpreters` の順番（composite → dateTime）。`reports/task-5-test-failure-report.md` 参照。
+      ユーザー承認のうえ案A を task-2 修正コミット 49e385c で適用し、再実行で 4件全パス・BUILD SUCCESS）
 - [x] テストログで YamlTestDataParser が使われていることを確認
-- [ ] self-check（NG 記録済み）/ QA / language / software-engineering / user review
+- [x] self-check / QA（Verdict OK）/ language・software-engineering（コード変更なしのため N/A。修正 49e385c は task-2 側でレビュー OK）/ user review（全task完了後まとめて）
 **Completion criteria**:
 - `mvn test` が BUILD SUCCESS（全テストパス、Excel なし）
 - テストログで YamlTestDataParser が使われていることが確認できる

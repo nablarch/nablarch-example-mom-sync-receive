@@ -1,26 +1,31 @@
-# Task 3 check: ExcelテストデータをYAMLに変換
+# task-3 Completion Check
 
 ## Completion Criteria
-| Criterion | Self-check | Evidence |
-| --- | --- | --- |
-| 変換対象の全 Excel に対応する YAML が生成されている | OK | converter `convert` ゴールで Converted 2 file(s)。生成 YAML 5件: RequestTest（setUpDb/testNormalEnd/testValidationError.yaml）、FormTest（testCharsetAndLength/testSingleValidation.yaml） |
-| サンプリング比較で Excel と YAML が一致（各最低3件、3件未満は全件） | OK | 下記 Sampling Comparison 参照。全5 YAML で差異なし |
-| 変換後の YAML がコミットされている | OK | commit ece341e（5 files, 1351 insertions）。Excel は未削除（Task #4 で削除） |
+
+| Criterion | Self-check | Evidence | QA | QA Evidence |
+|---|---|---|---|---|
+| 変換対象の全 Excel に対応する YAML が生成されている | OK | converter `convert` ゴールで Converted 2 file(s)。生成 YAML 5件: RequestTest（setUpDb/testNormalEnd/testValidationError.yaml）、FormTest（testCharsetAndLength/testSingleValidation.yaml） | OK | 変換元 Excel 2件の全シートと生成 YAML 5件の対応を確認。欠落・重複なし |
+| サンプリング比較で Excel と YAML が一致（各最低3件、3件未満は全件） | OK | 下記 Sampling Comparison 参照。全5 YAML で差異なし | OK | ExcelDump で全シート・全行ダンプし YAML 5件と**全件照合**。list_maps（testShots normal=1/validation=17、charsetAndLength=6、singleValidation=130）が Excel 行数と完全一致。messages の fields・rows、setup/expected_tables の列・行も一致 |
+| 変換後の YAML がコミットされている | OK | commit ece341e（5 files, 1351 insertions）。Excel は未削除（Task #4 で削除） | OK | ece341e でコミットされた YAML 5件を照合対象として確認 |
 
 ## QA Expert Review
-### Meaningful tests/verification
-- Verdict: OK
-- 変換元 Excel 2件を ExcelDump で全シート・全行ダンプし、生成 YAML 5件と**全件照合**（サンプリングではなく全データ）。list_maps（testShots normal=1/validation=17、charsetAndLength=6、singleValidation=130）が Excel 行数と完全一致、欠落・重複なし。messages は fields(name/type/length)・rows 全値一致、no列はメタとして除外、directives(MS932/CRLF)保存、requestId/userId は fw_header へ分離。setup_tables/expected_tables の group_id・列・行一致。文字列"null"→ネイティブ null、NTFコメント（行/セル内/末尾注釈）除外、空セル→""、日付・${systemTime}・${半角数字,9} 保存を確認。
-- 補足: messages.directives に `file-type: "Fixed"` が付与されるのは誤記でなく、NTF が MESSAGE 本体を FixedLengthFile として読む本来の解釈を converter が反映したもの（往復で挙動保存）。
-### Edge case coverage
-- Verdict: OK
-- サンプリング最低3件（元3件未満は全件）を全ファイルで充足（charsetAndLength 3/6、singleValidation 3/130、testNormalEnd 3、testValidationError 3/17、setUpDb 全件0件）。setUpDb.yaml が空なのは元シートが空のため忠実。.xls/.xlsx 併存なしの判定も正しい。
+
+| Aspect | Verdict | Evidence / Improvement |
+|---|---|---|
+| Meaningful tests/verification | OK | サンプリングではなく全データで照合し差異なし。文字列"null"→ネイティブ null、NTFコメント除外、空セル→""、日付・${systemTime}・${半角数字,9} 保存を確認。messages.directives の `file-type: "Fixed"` は NTF が MESSAGE 本体を FixedLengthFile として読む本来の解釈を反映したもの（往復で挙動保存） |
+| Edge case coverage | OK | サンプリング最低3件（元3件未満は全件）を全ファイルで充足（charsetAndLength 3/6、singleValidation 3/130、testNormalEnd 3、testValidationError 3/17、setUpDb 全件0件）。setUpDb.yaml が空なのは元シートが空のため忠実。.xls/.xlsx 併存なしの判定も正しい |
 
 ## Expert Reviews (code changes only)
+
 N/A — no code changes in this task.（Excel→YAML 変換データの追加のみ。プロダクション/テストコードの変更なし）
 
 ## Overall Verdict
-- OK（変換5件は変換元 Excel を忠実・漏れなく表現。全件照合で差異なし。QA 総合 Verdict も OK。directives/fw_header/file-type の変換は QA が別途照合し正当性確認済み）
+
+- Self-check: OK
+- QA: OK
+- Language expert: N/A
+- Software-engineering expert: N/A
+- Ready for user review: Yes
 
 ## Sampling Comparison（task-3 のみ）
 

@@ -1,27 +1,27 @@
-# Task 5 check: YAMLテストデータで全テストをパスさせる
+# task-5 Completion Check
 
 ## Completion Criteria
-| Criterion | Self-check | Evidence |
-| --- | --- | --- |
-| `mvn test` が BUILD SUCCESS で終了する（全テストパス、Excel ファイルなし） | NG | Excel 残存0件の状態で `LANG=ja_JP.UTF-8 mvn clean generate-resources`（BUILD SUCCESS）→ `mvn test` が **BUILD FAILURE**。`Tests run: 4, Failures: 1, Errors: 0, Skipped: 0`。ProjectInsertMessageFormTest 2件はパス、`ProjectInsertMessageRequestTest.testNormalEnd` が失敗（PROJECT_TEMP.INSERT_DATE `expected:<[${systemTime}]> but was:<[2014-09-13 12:34:56.0]>`） |
-| テストログで YamlTestDataParser が実際に使われていることが確認できる | OK | ログに `override ... component name = testDataParser, defined ... BasicTestDataParser, override ... YamlTestDataParser` と `YamlTestDataParser does not use TestDataReader; the injected value is ignored.` を確認 |
 
-詳細（事象・直接原因・根本原因・対応案）は `reports/task-5-test-failure-report.md` を参照。
-対応案A（`yamlInterpreters` を `dateTimeInterpreter` → `compositeInterpreter` の順に変更）は、スクラッチにコピーしたツリーで BUILD SUCCESS（4件全パス）を事前検証済み。ブランチには未適用。
+| Criterion | Self-check | Evidence | QA | QA Evidence |
+|---|---|---|---|---|
+| `mvn test` が BUILD SUCCESS で終了する（全テストパス、Excel ファイルなし） | OK | 1回目（6691e47 時点）は BUILD FAILURE（testNormalEnd の INSERT_DATE で `${systemTime}` が未解釈。詳細: `reports/task-5-test-failure-report.md`）。案A の修正コミット 49e385c 後、Excel 残存0件の状態で `LANG=ja_JP.UTF-8 mvn clean generate-resources` → `mvn test`: Tests run: 4, Failures: 0, Errors: 0, Skipped: 0 / BUILD SUCCESS（ProjectInsertMessageRequestTest=2, ProjectInsertMessageFormTest=2） | OK | `mvn test` を独立実行し BUILD SUCCESS・4件全パス・Skipped 0。surefire レポートで4メソッドの実行を確認。Excel（`.xl*`）残存0件、`@Disabled`/`@Ignore`/`assume` なし |
+| テストログで YamlTestDataParser が実際に使われていることが確認できる | OK | ログに `override ... component name = testDataParser, defined ... BasicTestDataParser, override ... YamlTestDataParser` と `YamlTestDataParser does not use TestDataReader; the injected value is ignored.` を確認。`.xls`/`PoiXlsReader` の参照なし | OK | override の WARN と YamlTestDataParser の INFO を独立確認。ログ中の `.xls`/`PoiXlsReader` は0件 |
 
 ## QA Expert Review
-### Meaningful tests/verification
-- Verdict: 未実施
-- テストが BUILD FAILURE となったため、運用ルールに従い作業を停止しユーザー判断待ち（QA レビューは対応方針決定・再テスト後に実施する）
-### Edge case coverage
-- Verdict: 未実施
-- 同上
+
+| Aspect | Verdict | Evidence / Improvement |
+|---|---|---|
+| Meaningful tests/verification | OK | testNormalEnd の INSERT_DATE/UPDATE_DATE（`${systemTime}`）は FixedSystemTimeProvider の値と実際に比較される列で、1回目はここで失敗し修正後はパス。（補足: 比較の実施は1回目の失敗から間接確認） |
+| Edge case coverage | OK | 正常系・バリデーションエラー・文字列長/文字種・単項目精査の全4メソッドが YAML 5件（setUpDb.yaml 含む）で実行されパス。スキップ・除外なし |
 
 ## Expert Reviews (code changes only)
-N/A — no code changes in this task.（テスト実行と確認のみ。.java・設定の変更なし。対応案適用時は task-2 成果物（unit-test.xml）の修正となるため、その際に Language / Software-engineering レビューを実施する）
+
+N/A — no code changes in this task.（テスト実行と確認のみ。失敗対応の設定修正 49e385c は task-2 の修正として `checks/task-2.md` で Language / Software-engineering レビュー済み）
 
 ## Overall Verdict
-- Self-check: NG（`mvn test` BUILD FAILURE。testNormalEnd の `${systemTime}` が解釈されず失敗）
-- QA: 未実施（停止中）
-- Language expert / Software-engineering expert: N/A（本タスク時点でコード変更なし）
-- 状態: ユーザーへ報告し、対応方針の判断待ち
+
+- Self-check: OK（1回目は BUILD FAILURE → task-2 修正 49e385c で解消）
+- QA: OK
+- Language expert: N/A
+- Software-engineering expert: N/A
+- Ready for user review: Yes
