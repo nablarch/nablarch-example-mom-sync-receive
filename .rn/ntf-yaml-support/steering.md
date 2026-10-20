@@ -129,10 +129,10 @@ Rules「`testDataParser` が参照される全フェーズで YAML リーダー�
 **Purpose**: 変換対象だった Excel を削除してコミットする。
 **Prerequisites**: #3
 **Steps**:
-- [ ] 変換対象 Excel を削除
-- [ ] 残存 Excel が0件であることを `checks/task-4.md` に記録（Excelなしテストは Task #5）
-- [ ] Excel 削除をコミット
-- [ ] self-check / QA / user review
+- [x] 変換対象 Excel を削除
+- [x] 残存 Excel が0件であることを `checks/task-4.md` に記録（Excelなしテストは Task #5）
+- [x] Excel 削除をコミット
+- [x] self-check / QA（Verdict OK）/ user review（全task完了後まとめて）
 **Completion criteria**:
 - 変換対象だった全 Excel が削除されている
 - 削除がコミットされている
