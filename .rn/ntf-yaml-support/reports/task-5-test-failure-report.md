@@ -225,3 +225,119 @@ nablarch-testing（6-NEXT-SNAPSHOT）のソースで確認した動作は次の�
 - 指示書の Rules と Acceptance criteria に、「`yamlInterpreters` は `dateTimeInterpreter` → `compositeInterpreter` の順番で定義する（`compositeInterpreter` は `${...}` を処理すると後続に渡さないため）」と順番も明記する。
 - task-2 の Steps と完了条件に、設定の変更後に Excel がある状態でテストを実行し、パスを確認する手順を加える。また task-3 で YAML が揃った時点でもテストを実行する。こうすれば、parser とインタープリタの設定の誤りを Excel 削除前に見つけられる。
 - 並列で作業している他のプロジェクトにも、task-2 で同じ順番（composite → dateTime）にしているものがないか確認する。
+
+---
+
+## 5. 案A の実施結果
+
+ユーザーの承認を得て案A を適用し、task-5 を再実行した。**4件全パス（BUILD SUCCESS）** で事象は解消した。
+
+### 5.1 適用した修正（commit `49e385c`、task-2 の修正として既存履歴の上に積んだ）
+
+`src/test/resources/unit-test.xml`（CRLF を維持）:
+
+```diff
+   <!-- YAMLテストデータ用インタープリタ（compositeInterpreter と dateTimeInterpreter の2つのみ。
+        YAML はネイティブに null / 改行 / 引用符を扱うため、NTF 固有記法の文字増幅と
+-       システム時刻記法のみを有効化する） -->
++       システム時刻記法のみを有効化する。
++       compositeInterpreter は ${...} を解釈すると後続へ委譲しないため、
++       ${systemTime} 等を解釈させるには dateTimeInterpreter を先に置くこと） -->
+   <list name="yamlInterpreters">
+-    <component-ref name="compositeInterpreter"/>
+     <component-ref name="dateTimeInterpreter"/>
++    <component-ref name="compositeInterpreter"/>
+   </list>
+```
+
+- 変更はこの1ファイルだけ。pom.xml、YAML テストデータ、テストクラス（.java）、本番設定（src/main/resources）は変えていない。
+- 「`compositeInterpreter` と `dateTimeInterpreter` の2つのみ」と「`YamlTestDataParser` で `testDataParser` を上書きする」構成はそのまま。
+
+### 5.2 再実行の手順
+
+1. Excel の残存を確認（target と .git を除き `-iname '*.xl*'` で検索）→ 0件
+2. `LANG=ja_JP.UTF-8 LC_ALL=ja_JP.UTF-8 mvn clean generate-resources` → BUILD SUCCESS
+3. `LANG=ja_JP.UTF-8 LC_ALL=ja_JP.UTF-8 mvn test` → BUILD SUCCESS
+
+### 5.3 Maven 実行結果（抜粋）
+
+```
+[INFO] Running com.nablarch.example.form.ProjectInsertMessageFormTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.185 s -- in com.nablarch.example.form.ProjectInsertMessageFormTest
+[INFO] Running com.nablarch.example.ProjectInsertMessageRequestTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.063 s -- in com.nablarch.example.ProjectInsertMessageRequestTest
+...
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
+...
+[INFO] BUILD SUCCESS
+```
+
+| テストクラス | 修正前（1回目） | 修正後 |
+| --- | --- | --- |
+| `ProjectInsertMessageFormTest` | 2件パス | 2件パス |
+| `ProjectInsertMessageRequestTest` | 2件中1件失敗（`testNormalEnd`） | 2件パス |
+| 合計 | Tests run: 4, Failures: 1 / BUILD FAILURE | Tests run: 4, Failures: 0 / BUILD SUCCESS |
+
+ログ中の `ComparisonFailure` は0件。
+
+### 5.4 アプリケーションログ（抜粋）
+
+**(a) YamlTestDataParser が使われている**
+
+```
+2026-10-20 13:56:46.032 -WARN- nablarch.core.repository.di.config.xml.XmlComponentDefinitionLoader ... override component classname was not matched.  replace all component configuration.  component name = testDataParser, defined component definition classname = nablarch.test.core.reader.BasicTestDataParser, override component definition classname = nablarch.test.core.reader.YamlTestDataParser
+2026-10-20 13:56:48.619 -INFO- nablarch.test.core.reader.YamlTestDataParser ... YamlTestDataParser does not use TestDataReader; the injected value is ignored.
+```
+
+**(b) testNormalEnd のアクション実行フェーズ（SQL トレースログ）。1回目と同じく、固定システム時刻 `2014-09-13 12:34:56.0` で登録している**
+
+```
+2026-10-20 13:56:55.841 -DEBUG- SQL [202610201356557960036] ... req_id = [ProjectInsertMessage] usr_id = [batch_user] nablarch.core.db.statement.BasicSqlPStatement#executeUpdate
+	SQL = [INSERT INTO PUBLIC.PROJECT_TEMP(ALLOCATION_OF_CORP_EXPENSES,CLIENT_ID,COST_OF_GOODS_SOLD,INSERT_DATE,NOTE,...,UPDATE_DATE,USER_ID)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)]
+2026-10-20 13:56:55.841 -TRACE- SQL [202610201356557960036] ... nablarch.core.db.statement.BasicSqlPStatement#Parameters
+	...
+	04 = [2014-09-13 12:34:56.0]      ← INSERT_DATE
+	...
+	16 = [2014-09-13 12:34:56.0]      ← UPDATE_DATE
+	17 = [100]
+2026-10-20 13:56:55.843 -DEBUG- SQL ... BasicSqlPStatement#executeUpdate
+	execute_time(ms) = [2] update_count = [1]
+2026-10-20 13:56:55.844 -DEBUG- SQL ... transaction commit. resource=[transaction]
+```
+
+**(c) 検証フェーズ。期待値比較用の SELECT で1件取得し、その後 `ComparisonFailure` は出ていない（1回目はこの直後に INSERT_DATE で失敗していた）**
+
+```
+2026-10-20 13:56:55.858 -DEBUG- SQL [null] ... nablarch.core.db.statement.BasicSqlPStatement#retrieve
+	SQL = [select PROJECT_NAME,PROJECT_TYPE,...,STATUS,INSERT_DATE,UPDATE_DATE from PROJECT_TEMP order by PROJECT_TEMP_ID]
+2026-10-20 13:56:55.861 -DEBUG- SQL ... BasicSqlPStatement#retrieve
+	execute_time(ms) = [1] retrieve_time(ms) = [2] count = [1]
+2026-10-20 13:56:55.861 -DEBUG- SQL ... transaction commit. resource=[test]
+```
+
+修正後は、期待値 `${systemTime}` が `dateTimeInterpreter` で `FixedSystemTimeProvider` の時刻に変換される。そのため実際の値 `2014-09-13 12:34:56.0` と一致し、INSERT_DATE と UPDATE_DATE の検証がパスした。
+
+### 5.5 レビュー結果
+
+| 対象 | レビュー | 結果 | 主な所見 |
+| --- | --- | --- | --- |
+| task-2 修正（49e385c） | QA | OK | 修正前 Failures 1 → 修正後 0 を確認。`DateTimeInterpreter` は値全体が完全一致した場合だけ変換するので、文字列増幅記法（`${半角数字,9}` など）に影響しない。全 YAML 5件の `${...}` 記法を確認済み |
+| task-2 修正（49e385c） | Language | OK | NTF 標準・隣接 batch と同じ前後関係で、CRLF とインデントも維持。任意の改善点: コメント1行目の並びを定義順に合わせる |
+| task-2 修正（49e385c） | Software-engineering | OK | テスト専用設定の中に閉じており、src/main には影響しない。順番の理由がコメントに書かれている。任意の改善点: 「NTF 標準と同じ前後関係」とコメントに書き添える |
+| task-5 | QA | OK | `mvn test` を独立に再実行して BUILD SUCCESS（4件全パス）。Excel 残存0件、スキップなし、`.xls`/`PoiXlsReader` の参照0件 |
+
+任意の改善点2件はブロッカーではないので、記録だけ残してコードは変えていない。
+
+### 5.6 関連コミットと再発防止策の対応状況
+
+| コミット | 内容 |
+| --- | --- |
+| `b5764a6` | task-5 1回目の結果（BUILD FAILURE）と本レポートの初版 |
+| `49e385c` | 案A の適用（task-2 の修正） |
+| `2ad2436` | task-5 完了記録、task-2 の修正記録、check ファイル（task-1〜5）の新書式化 |
+
+| 再発防止策（「4. 再発防止」より） | 状況 |
+| --- | --- |
+| 指示書に `yamlInterpreters` の順番（`dateTimeInterpreter` → `compositeInterpreter`）と理由を明記する | 対応済み（指示書 V1.5 の Acceptance criteria、Rules、Task #2 の Steps と Completion criteria に追記） |
+| task-2 と task-3 の時点でもテストを実行する手順を加える | 未対応（指示書への追記はユーザー判断待ち） |
+| 並列で作業している他のプロジェクトで同じ順番になっていないか確認する | 未対応 |
