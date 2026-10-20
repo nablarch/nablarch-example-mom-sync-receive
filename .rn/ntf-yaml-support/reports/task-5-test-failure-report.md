@@ -333,16 +333,10 @@ nablarch-testing（6-NEXT-SNAPSHOT）のソースで確認した動作は次の�
 
 任意の改善点2件はブロッカーではないので、記録だけ残してコードは変えていない。
 
-### 5.6 関連コミットと再発防止策の対応状況
+### 5.6 関連コミット
 
 | コミット | 内容 |
 | --- | --- |
 | `b5764a6` | task-5 1回目の結果（BUILD FAILURE）と本レポートの初版 |
 | `49e385c` | 案A の適用（task-2 の修正） |
 | `2ad2436` | task-5 完了記録、task-2 の修正記録、check ファイル（task-1〜5）の新書式化 |
-
-| 再発防止策（「4. 再発防止」より） | 状況 |
-| --- | --- |
-| 指示書に `yamlInterpreters` の順番（`dateTimeInterpreter` → `compositeInterpreter`）と理由を明記する | 対応済み（指示書 V1.5 の Acceptance criteria、Rules、Task #2 の Steps と Completion criteria に追記） |
-| task-2 と task-3 の時点でもテストを実行する手順を加える | 未対応（指示書への追記はユーザー判断待ち） |
-| 並列で作業している他のプロジェクトで同じ順番になっていないか確認する | 未対応 |
