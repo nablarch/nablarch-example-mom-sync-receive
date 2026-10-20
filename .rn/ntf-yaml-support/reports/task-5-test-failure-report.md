@@ -169,6 +169,21 @@ nablarch-testing（6-NEXT-SNAPSHOT）のソースで確認した動作は次の�
 </list>
 ```
 
+参考: 公式ドキュメント nablarch-document の `development_tools/testing_framework/setup/testdata.html`「テストデータの形式をYAMLに変更する」にも、YAML 形式用の設定例がある。その例でも `interpreters` に `dateTimeInterpreter` → `compositeInterpreter` の順で2つだけを指定しており、並びは NTF 標準と同じである。ただし、この順番でなければならないことは明記されていない。
+
+```xml
+<!-- テストデータを解析するコンポーネント -->
+<component name="testDataParser" class="nablarch.test.core.reader.YamlTestDataParser">
+  <property name="dbInfo" ref="dbInfo"/>
+  <property name="interpreters">
+    <list>
+      <component-ref name="dateTimeInterpreter"/>
+      <component-ref name="compositeInterpreter"/>
+    </list>
+  </property>
+</component>
+```
+
 ### 他のテストが失敗しなかった理由
 
 - `ProjectInsertMessageFormTest`: `${半角数字,9}` などの文字列増幅記法だけを使っている。`compositeInterpreter` が先頭にあっても正しく処理される。
@@ -179,9 +194,10 @@ nablarch-testing（6-NEXT-SNAPSHOT）のソースで確認した動作は次の�
 
 ## 3. 根本原因
 
-1. **インタープリタは「どれを使うか」だけでなく「どの順番か」でも動作が変わるが、その要件がどこにも書かれていなかった。**
-   - 指示書の Acceptance criteria と Rules には「`yamlInterpreters` には `compositeInterpreter` と `dateTimeInterpreter` の2つのみを定義する」とだけある。順番の指定はない。
-   - task-2 では、この記載の並び（composite → dateTime）をそのまま定義の順番にした。
+1. **インタープリタは「どれを使うか」だけでなく「どの順番か」でも動作が変わる。task-2 では公式ドキュメントの設定例ではなく、指示書の記載の並びに従って定義した。**
+   - 公式ドキュメント（nablarch-document の `development_tools/testing_framework/setup/testdata.html`「テストデータの形式をYAMLに変更する」）の設定例は、`dateTimeInterpreter` → `compositeInterpreter` の順になっている。ただし、この順番が必須であることは明記されていない。
+   - 指示書の Acceptance criteria と Rules には「`yamlInterpreters` には `compositeInterpreter` と `dateTimeInterpreter` の2つのみを定義する」とだけあり、2つを composite → dateTime の順に挙げていた。順番の指定はない。
+   - task-2 では、公式ドキュメントの設定例と照らし合わせず、指示書の並び（composite → dateTime）をそのまま定義の順番にした。
    - `CompositeInterpreter` は `${...}` を見つけると後続に渡さないため、`${...}` 形式の記法同士では先に置いたものが優先される。この制約が考慮されていなかった。
 2. **前回の構成から変えた影響を評価していなかった。**
    - 前回パスした構成（02b2b61）と、隣接プロジェクト nablarch-example-batch の構成は `nullInterpreter → dateTimeInterpreter → lineSeparatorInterpreter → compositeInterpreter` の順で、NTF 標準と同じだった。
