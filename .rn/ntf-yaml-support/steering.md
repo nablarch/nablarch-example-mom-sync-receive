@@ -58,7 +58,7 @@ README（「実行手順」）で確認した手順。
 - [x] 変更ファイルをコミットする
 - [x] self-check
 - [x] QA expert review (Agent: general-purpose / Opus) — Verdict OK
-- [ ] user review（全 task 完了後にまとめて実施）
+- [x] user review（全 task 完了後にまとめて実施 — OK）
 **Completion criteria**:
 - 既存の `ntf-yaml-support` ブランチ上で作業しており、コミット履歴が維持されている（過去の移行コミットが残っている）
 - ブランチの既存先端の上に、ワーキングツリー全体が `develop` と同一内容になる新規コミットが1つ積まれている
@@ -77,7 +77,7 @@ README（「実行手順」）で確認した手順。
 - [x] 変更したファイルをコミットする（`e3ca970`）
 - [x] self-check
 - [x] QA / language / software-engineering expert review (Agent: general-purpose / Opus) — いずれも Verdict OK
-- [ ] user review（全 task 完了後にまとめて実施）
+- [x] user review（全 task 完了後にまとめて実施 — OK）
 **Completion criteria**:
 - `pom.xml` に `nablarch-testing-yaml:1.0.0-SNAPSHOT` が test スコープで追加されている
 - `pom.xml` の `<build><plugins>` に `nablarch-testing-converter:1.0.0-SNAPSHOT` がビルドプラグインとして追加されている
@@ -96,7 +96,7 @@ README（「実行手順」）で確認した手順。
 - [x] 変換 YAML をコミットする（`236daa6`。Excel はまだ削除しない）
 - [x] self-check
 - [x] QA expert review (Agent: general-purpose / Opus) — Verdict OK（全件比較で差異0件）
-- [ ] user review（全 task 完了後にまとめて実施）
+- [x] user review（全 task 完了後にまとめて実施 — OK）
 **Completion criteria**:
 - 変換対象の全 Excel に対応する YAML が生成されている
 - サンプリング比較で Excel と YAML の内容が一致している
@@ -111,7 +111,7 @@ README（「実行手順」）で確認した手順。
 - [x] Excel 削除をコミットする（`5204573`）
 - [x] self-check
 - [x] QA expert review (Agent: general-purpose / Opus) — Verdict OK
-- [ ] user review（全 task 完了後にまとめて実施）
+- [x] user review（全 task 完了後にまとめて実施 — OK）
 **Completion criteria**:
 - 変換対象だった全 Excel が削除されている
 - 削除がコミットされている
@@ -124,7 +124,7 @@ README（「実行手順」）で確認した手順。
 - [x] テストログで YamlTestDataParser が使われていることを確認する
 - [x] self-check
 - [x] QA expert review (Agent: general-purpose / Opus) — Verdict OK（YAML 一時改変で失敗することも確認）。language / software-engineering は本 task にコード変更がないため N/A（設定変更は task-2 でレビュー済み）
-- [ ] user review（全 task 完了後にまとめて実施）
+- [x] user review（全 task 完了後にまとめて実施 — OK）
 **Completion criteria**:
 - `mvn test` が BUILD SUCCESS で終了する（全テストパス、Excel ファイルなし）
 - テストログで YamlTestDataParser が実際に使われていることが確認できる
