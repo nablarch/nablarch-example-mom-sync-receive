@@ -51,7 +51,7 @@ README（「実行手順」）で確認した手順。
 - [x] 結果を `checks/task-1.md` に記録する
 - [x] 変更ファイルをコミットする
 - [x] self-check
-- [ ] QA expert review (Agent: general-purpose / Opus)
+- [x] QA expert review (Agent: general-purpose / Opus) — Verdict OK
 - [ ] user review（全 task 完了後にまとめて実施）
 **Completion criteria**:
 - 既存の `ntf-yaml-support` ブランチ上で作業しており、コミット履歴が維持されている（過去の移行コミットが残っている）
