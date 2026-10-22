@@ -13,6 +13,12 @@
 
 ## Build / Test
 README（「実行手順」）で確認した手順。
+- 実行環境（README の動作環境: Java 17 / Maven 3.9.9 以降）:
+  - JDK: Eclipse Temurin 17.0.20+8（`/home/k10949/.local/share/mise/installs/java/temurin-17.0.20+8`）
+  - Maven: Apache Maven 3.9.16（mise 管理、`/home/k10949/.local/share/mise/installs/maven/latest/apache-maven-3.9.16`）
+  - OS: Linux（WSL2, amd64）、Default locale `ja_JP`、platform encoding `UTF-8`
+  - JDK の選択: シェルの既定 java / `JAVA_HOME` は mise の Java 21.0.2 だが、`~/.mavenrc` の `export JAVA_HOME=/home/k10949/.local/share/mise/installs/java/temurin-17` により Maven は JDK 17 で動作する（`mvn -v` で `Java version: 17.0.20` を確認）。テストの fork JVM も同じ JDK 17 で実行されている（`target/surefire-reports/TEST-*.xml` の `java.version=17.0.20`、`java.home=…/temurin-17.0.20+8`）。
+  - コンパイル対象: `pom.xml` の `maven.compiler.source` / `maven.compiler.target` = 17
 - 前提: 動作確認用モジュール `nablarch-example-mom-testing-common` がローカル Maven リポジトリに install 済みであること（README 3.1。`~/.m2/repository/com/nablarch/example/nablarch-example-mom-testing-common` に存在することを確認済み）。
 - プロファイル指定: 不要（README に `-P` 指定の記載なし）。
 - generate-resources: 必要。`mvn clean generate-resources` で DB セットアップ（gsp-dba-maven-plugin の DDL 生成・実行、データロード）とエンティティクラス生成を行う（README「データベースのセットアップ及びエンティティクラスの作成について」。Java 17 用 JVM オプションは `.mvn/jvm.config` で指定済み）。
