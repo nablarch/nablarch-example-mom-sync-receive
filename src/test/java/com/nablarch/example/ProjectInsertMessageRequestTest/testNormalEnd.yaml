@@ -1,0 +1,80 @@
+list_maps:
+  - id: "testShots"
+    rows:
+      - no: "1"
+        description: "データレコードの値が正しくデータベースに登録されること。"
+        expectedStatusCode: null
+        setUpTable: "1"
+        expectedTable: "1"
+        diConfig: "messaging-sync-receive-boot.xml"
+        requestPath: "RECEIVEAPP"
+        userId: "batch_user"
+
+messages:
+  - id: "setUpMessages"
+    directives:
+      file-type: "Fixed"
+      record-separator: "CRLF"
+      text-encoding: "MS932"
+    fw_header:
+      requestId: "ProjectInsertMessage"
+      userId: "hoge"
+    records:
+      - record_type: "no"
+        fields:
+          - {name: "プロジェクト名", type: "全半角", length: "256"}
+          - {name: "プロジェクト種別", type: "半角", length: "128"}
+          - {name: "プロジェクト分類", type: "半角", length: "128"}
+          - {name: "プロジェクト開始日付", type: "半角", length: "8"}
+          - {name: "プロジェクト終了日付", type: "半角", length: "8"}
+          - {name: "顧客ID", type: "半角", length: "9"}
+          - {name: "プロジェクトマネージャー", type: "全半角", length: "256"}
+          - {name: "プロジェクトリーダー", type: "全半角", length: "256"}
+          - {name: "ユーザID", type: "半角", length: "9"}
+          - {name: "備考", type: "全半角", length: "1024"}
+          - {name: "売上高", type: "半角", length: "9"}
+          - {name: "売上原価", type: "半角", length: "9"}
+          - {name: "販管費", type: "半角", length: "9"}
+          - {name: "本社配賦", type: "半角", length: "9"}
+          - {name: "空白領域", type: "半角", length: "2"}
+        rows:
+          - ["プロジェクト００１", "development", "s", "20140203", "20180304", "1", "鈴木", "佐藤", "100", "備考欄", "10000", "1000", "2000", "3000", ""]
+  - id: "expectedMessages"
+    directives:
+      file-type: "Fixed"
+      record-separator: "CRLF"
+      text-encoding: "MS932"
+    records:
+      - record_type: "no"
+        fields:
+          - {name: "リターンコード", type: "半角", length: "30"}
+          - {name: "詳細", type: "全半角", length: "100"}
+        rows:
+          - ["success", ""]
+
+setup_tables:
+  - group_id: "1"
+    table: "PROJECT_TEMP"
+    rows: []
+
+expected_tables:
+  - group_id: "1"
+    table: "PROJECT_TEMP"
+    rows:
+      - PROJECT_NAME: "プロジェクト００１"
+        PROJECT_TYPE: "development"
+        PROJECT_CLASS: "s"
+        PROJECT_START_DATE: "2014-02-03"
+        PROJECT_END_DATE: "2018-03-04"
+        CLIENT_ID: "1"
+        PROJECT_MANAGER: "鈴木"
+        PROJECT_LEADER: "佐藤"
+        USER_ID: "100"
+        NOTE: "備考欄"
+        SALES: "10000"
+        COST_OF_GOODS_SOLD: "1000"
+        SGA: "2000"
+        ALLOCATION_OF_CORP_EXPENSES: "3000"
+        STATUS: "0"
+        INSERT_DATE: "${systemTime}"
+        UPDATE_DATE: "${systemTime}"
