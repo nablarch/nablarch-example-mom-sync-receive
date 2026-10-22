@@ -28,7 +28,7 @@ README（「実行手順」）で確認した手順。
 ## YAML 設定の配置方針（判定）
 - `src/test/resources/unit-test.xml` はテスト用 diConfig `messaging-sync-receive-boot.xml`（`src/test/resources`）と `nablarch/test/test-data.xml` を import している。
 - `ProjectInsertMessageRequestTest` の diConfig は `messaging-sync-receive-boot.xml`。メッセージングプロバイダは `EmbeddedMessagingProvider`（テストデータを読まない）。
-- アクション `ProjectInsertMessageAction` は受信側で `sendSync` を呼ばず、テストデータに sendSync 応答電文（`response_*`）はない。要求電文（`setUpMessages`）・期待応答電文（`expectedMessages`）は、アクション実行の前後に `MQSupport` が `TestSupport.getTestDataParser()`（＝`unit-test.xml` のリポジトリ）経由で読む。
+- アクション `ProjectInsertMessageAction` は受信側で `sendSync` を呼ばず、テストデータに sendSync 応答電文（`response_*`）はない。要求電文（`setUpMessages`）・期待応答電文（`expectedMessages`）はいずれも `MessagingRequestTestSupport#beforeExecute` でアクション起動前に `MQSupport` が `TestSupport.getTestDataParser()`（＝`unit-test.xml` のリポジトリ）経由で読む。DB の準備・検証も、`MainForRequestTesting` が diConfig で再初期化したリポジトリを元に戻した後（または起動前）に読む。
 - 判定: **非該当 → `unit-test.xml` に配置する**（boot 側への配置は不要）。本番用 boot（`src/main/resources`）には入れない。
 
 ## scripts
@@ -63,14 +63,14 @@ README（「実行手順」）で確認した手順。
 **Purpose**: `pom.xml` に `nablarch-testing-yaml`（test 依存）と `nablarch-testing-converter`（ビルドプラグイン）を追加し、`unit-test.xml` に `YamlTestDataParser`（`testDataParser` 上書き）を testdata.html の設定例どおりに追加する。
 **Prerequisites**: #1
 **Steps**:
-- [ ] `pom.xml` に `nablarch-testing-yaml:1.0.0-SNAPSHOT`（test scope）を追加する
-- [ ] `pom.xml` の `<build><plugins>` に `nablarch-testing-converter:1.0.0-SNAPSHOT` を追加する（`<configuration>` に from=xls / to=yaml / input / output / overwrite）
-- [ ] 構成判定（応答電文 `response_*` / sendSync の有無）→ 非該当（「YAML 設定の配置方針」参照）
-- [ ] `unit-test.xml` に `YamlTestDataParser` を配置する（`interpreters` 内 `<list>` に `dateTimeInterpreter` → `compositeInterpreter` の2つのみ。`test-data.xml` import・`dbInfo` 定義より後）
-- [ ] `mvn dependency:resolve` と `mvn help:describe` で yaml 依存と converter `convert` ゴールの解決を確認する
-- [ ] 変更したファイルをコミットする
-- [ ] self-check
-- [ ] QA / language / software-engineering expert review (Agent: general-purpose / Opus)
+- [x] `pom.xml` に `nablarch-testing-yaml:1.0.0-SNAPSHOT`（test scope）を追加する
+- [x] `pom.xml` の `<build><plugins>` に `nablarch-testing-converter:1.0.0-SNAPSHOT` を追加する（`<configuration>` に from=xls / to=yaml / input / output / overwrite）
+- [x] 構成判定（応答電文 `response_*` / sendSync の有無）→ 非該当（「YAML 設定の配置方針」参照）
+- [x] `unit-test.xml` に `YamlTestDataParser` を配置する（`interpreters` 内 `<list>` に `dateTimeInterpreter` → `compositeInterpreter` の2つのみ。`test-data.xml` import・`dbInfo` 定義より後）
+- [x] `mvn dependency:resolve` と `mvn help:describe` で yaml 依存と converter `convert` ゴールの解決を確認する（いずれも BUILD SUCCESS）
+- [x] 変更したファイルをコミットする（`e3ca970`）
+- [x] self-check
+- [x] QA / language / software-engineering expert review (Agent: general-purpose / Opus) — いずれも Verdict OK
 - [ ] user review（全 task 完了後にまとめて実施）
 **Completion criteria**:
 - `pom.xml` に `nablarch-testing-yaml:1.0.0-SNAPSHOT` が test スコープで追加されている
