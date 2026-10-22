@@ -114,9 +114,9 @@ README（「実行手順」）で確認した手順。
 **Purpose**: Excel なしで全テストがパスすることを確認する。
 **Prerequisites**: #4
 **Steps**:
-- [ ] `mvn test` が BUILD SUCCESS になることを確認する
-- [ ] テストログで YamlTestDataParser が使われていることを確認する
-- [ ] self-check
+- [x] `mvn test` が BUILD SUCCESS になることを確認する（Excel なしで Tests run: 4, Failures: 0, Errors: 0）
+- [x] テストログで YamlTestDataParser が使われていることを確認する
+- [x] self-check
 - [ ] QA / language / software-engineering expert review (Agent: general-purpose / Opus)
 - [ ] user review（全 task 完了後にまとめて実施）
 **Completion criteria**:
