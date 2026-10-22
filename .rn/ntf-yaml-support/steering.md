@@ -100,10 +100,10 @@ README（「実行手順」）で確認した手順。
 **Purpose**: 変換対象だった Excel を削除してコミットする。
 **Prerequisites**: #3
 **Steps**:
-- [ ] 変換対象 Excel を削除する
-- [ ] 残存 Excel が0件であることを `checks/task-4.md` に記録する
-- [ ] Excel 削除をコミットする
-- [ ] self-check
+- [x] 変換対象 Excel を削除する（2件）
+- [x] 残存 Excel が0件であることを `checks/task-4.md` に記録する
+- [x] Excel 削除をコミットする（`5204573`）
+- [x] self-check
 - [ ] QA expert review (Agent: general-purpose / Opus)
 - [ ] user review（全 task 完了後にまとめて実施）
 **Completion criteria**:
