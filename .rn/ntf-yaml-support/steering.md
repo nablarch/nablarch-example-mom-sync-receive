@@ -117,7 +117,7 @@ README（「実行手順」）で確認した手順。
 - [x] `mvn test` が BUILD SUCCESS になることを確認する（Excel なしで Tests run: 4, Failures: 0, Errors: 0）
 - [x] テストログで YamlTestDataParser が使われていることを確認する
 - [x] self-check
-- [ ] QA / language / software-engineering expert review (Agent: general-purpose / Opus)
+- [x] QA expert review (Agent: general-purpose / Opus) — Verdict OK（YAML 一時改変で失敗することも確認）。language / software-engineering は本 task にコード変更がないため N/A（設定変更は task-2 でレビュー済み）
 - [ ] user review（全 task 完了後にまとめて実施）
 **Completion criteria**:
 - `mvn test` が BUILD SUCCESS で終了する（全テストパス、Excel ファイルなし）
