@@ -82,13 +82,13 @@ README（「実行手順」）で確認した手順。
 **Purpose**: converter で Excel を YAML へ変換してソースツリー内に配置し、サンプリングで内容一致を確認する。
 **Prerequisites**: #2
 **Steps**:
-- [ ] 対象 Excel の所在を確認する
-- [ ] 同名 `.xls` / `.xlsx` の併存を確認する
-- [ ] converter README に従い全 Excel を YAML 変換する
-- [ ] 各 YAML を Excel と最低3件（元データが3件未満は全件）サンプリング比較する
-- [ ] 比較結果を `checks/task-3.md` の Sampling Comparison に記録する
-- [ ] 変換 YAML をコミットする（Excel はまだ削除しない）
-- [ ] self-check
+- [x] 対象 Excel の所在を確認する（2件）
+- [x] 同名 `.xls` / `.xlsx` の併存を確認する（なし）
+- [x] converter README に従い全 Excel を YAML 変換する（`mvn com.nablarch.framework:nablarch-testing-converter:1.0.0-SNAPSHOT:convert`、`Converted 2 file(s).`、YAML 5件）
+- [x] 各 YAML を Excel と最低3件（元データが3件未満は全件）サンプリング比較する（`scripts/ExcelDump.java` 使用、差異なし）
+- [x] 比較結果を `checks/task-3.md` の Sampling Comparison に記録する
+- [x] 変換 YAML をコミットする（`236daa6`。Excel はまだ削除しない）
+- [x] self-check
 - [ ] QA expert review (Agent: general-purpose / Opus)
 - [ ] user review（全 task 完了後にまとめて実施）
 **Completion criteria**:
