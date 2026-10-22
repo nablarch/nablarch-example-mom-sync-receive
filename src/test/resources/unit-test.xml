@@ -17,22 +17,6 @@
   <import file="nablarch/test/test-data.xml"/>
   <import file="nablarch/test/test-transaction.xml"/>
 
-  <!-- YAMLテストデータ用インタープリタ（compositeInterpreter と dateTimeInterpreter の2つのみ。
-       YAML はネイティブに null / 改行 / 引用符を扱うため、NTF 固有記法の文字増幅と
-       システム時刻記法のみを有効化する。
-       compositeInterpreter は ${...} を解釈すると後続へ委譲しないため、
-       ${systemTime} 等を解釈させるには dateTimeInterpreter を先に置くこと） -->
-  <list name="yamlInterpreters">
-    <component-ref name="dateTimeInterpreter"/>
-    <component-ref name="compositeInterpreter"/>
-  </list>
-
-  <!-- YamlTestDataParser で testDataParser を上書き -->
-  <component name="testDataParser" class="nablarch.test.core.reader.YamlTestDataParser">
-    <property name="dbInfo" ref="dbInfo"/>
-    <property name="interpreters" ref="yamlInterpreters"/>
-  </component>
-
   <!--
   マスタデータ復旧設定
   マスタデータ復旧を使用する際には、いくつかの手順が必要になります。
