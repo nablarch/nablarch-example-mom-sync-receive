@@ -89,7 +89,7 @@ README（「実行手順」）で確認した手順。
 - [x] 比較結果を `checks/task-3.md` の Sampling Comparison に記録する
 - [x] 変換 YAML をコミットする（`236daa6`。Excel はまだ削除しない）
 - [x] self-check
-- [ ] QA expert review (Agent: general-purpose / Opus)
+- [x] QA expert review (Agent: general-purpose / Opus) — Verdict OK（全件比較で差異0件）
 - [ ] user review（全 task 完了後にまとめて実施）
 **Completion criteria**:
 - 変換対象の全 Excel に対応する YAML が生成されている

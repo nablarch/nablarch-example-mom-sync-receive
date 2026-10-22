@@ -4,16 +4,16 @@
 
 | Criterion | Self-check | Evidence | QA | QA Evidence |
 |---|---|---|---|---|
-| 変換対象の全 Excel に対応する YAML が生成されている | OK | 対象 Excel 2件（`ProjectInsertMessageRequestTest.xlsx`、`form/ProjectInsertMessageFormTest.xls`）。`mvn com.nablarch.framework:nablarch-testing-converter:1.0.0-SNAPSHOT:convert`（pom の `<configuration>` 使用）で `Converted 2 file(s).` / BUILD SUCCESS。シート数どおり YAML 5件（RequestTest: setUpDb / testNormalEnd / testValidationError、FormTest: testCharsetAndLength / testSingleValidation）を生成 | | |
-| サンプリング比較（各ファイル最低3件、元データが3件未満は全件）で Excel と YAML の内容が一致している | OK | `scripts/ExcelDump.java` で Excel をダンプし YAML と突き合わせ。5ファイルとも差異なし（「Sampling Comparison」参照）。行数も一致（testShots 1 / 17、charsetAndLength 6、singleValidation 130、setUpDb は Excel 側が空シートで YAML も空） | | |
-| 変換後の YAML ファイルがコミットされている | OK | `236daa6` で YAML 5件をコミット（Excel は未削除） | | |
+| 変換対象の全 Excel に対応する YAML が生成されている | OK | 対象 Excel 2件（`ProjectInsertMessageRequestTest.xlsx`、`form/ProjectInsertMessageFormTest.xls`）。`mvn com.nablarch.framework:nablarch-testing-converter:1.0.0-SNAPSHOT:convert`（pom の `<configuration>` 使用）で `Converted 2 file(s).` / BUILD SUCCESS。シート数どおり YAML 5件（RequestTest: setUpDb / testNormalEnd / testValidationError、FormTest: testCharsetAndLength / testSingleValidation）を生成 | OK | src 配下の Excel は2件（xlsx 3シート、xls 2シート）で、5シートと YAML 5件が名前どおり1対1。併存なし。setUpDb は物理行0の空シートで YAML 0 byte。`YamlLoader` は空ドキュメントを空 Map として扱うため妥当 |
+| サンプリング比較（各ファイル最低3件、元データが3件未満は全件）で Excel と YAML の内容が一致している | OK | `scripts/ExcelDump.java` で Excel をダンプし YAML と突き合わせ。5ファイルとも差異なし（「Sampling Comparison」参照）。行数も一致（testShots 1 / 17、charsetAndLength 6、singleValidation 130、setUpDb は Excel 側が空シートで YAML も空） | OK | 自己チェックとは別のサンプル（expectedMessages、フィールド定義、testShots no=10、setUpMessages no=4/5/12/16、singleValidation 4/52/53/119行目など）に加え、独自スクリプトで全ブロック・全行・全セルを比較し差異0件。全セルが STRING/BLANK（数値・数式なし）。ディレクティブ・fw_header・group_id・行数も一致 |
+| 変換後の YAML ファイルがコミットされている | OK | `236daa6` で YAML 5件をコミット（Excel は未削除） | OK | `git show --name-status 236daa6` は YAML 5件の追加のみ。HEAD に Excel 2件が残存。`236daa6`〜HEAD の差分は `.rn` 配下のみ |
 
 ## QA Expert Review
 
 | Aspect | Verdict | Evidence / Improvement |
 |---|---|---|
-| Meaningful tests/verification | | |
-| Edge case coverage | | |
+| Meaningful tests/verification | OK | 自己チェックの3件サンプルに加え独立した全件比較で差異0件。POI でセル型を確認し、数値・日付の書式化で値が変わる懸念がないことを確認 |
+| Edge case coverage | OK | 空シート、`null`、空セル、`${...}` 記法、コメント行・列・行内コメント、group_id（`1` / `com`）、ヘッダのみのテーブル、ディレクティブ、fw_header を確認。注記: YAML の `file-type: "Fixed"` は Excel にない項目だが NTF の MESSAGE は固定長処理のため同義。ヘッダのみのテーブル（`rows: []`）が実行時に同様に効くかは Task #5 のテスト実行で確認する |
 
 ## Expert Reviews (code changes only)
 
@@ -47,7 +47,7 @@ N/A — no code changes in this task.
 ## Overall Verdict
 
 - Self-check: OK
-- QA: 
+- QA: OK
 - Language expert: N/A
 - Software-engineering expert: N/A
-- Ready for user review: 
+- Ready for user review: Yes（全 task 完了後にまとめて実施）
